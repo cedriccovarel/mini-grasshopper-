@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mini Grasshopper Editor</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <header class="toolbar">
+      <div class="brand">
+        <div class="logo">GH</div>
+        <div>
+          <h1>Node Board</h1>
+          <p>Interface type Grasshopper</p>
+        </div>
+      </div>
+
+      <section class="toolbar-group tools-group">
+        <div class="section-title first">Outils</div>
+        <div class="tool-palette" aria-label="Palette d’outils">
+          <div class="tool-icon" draggable="true" data-tool="box" title="Box">▣</div>
+          <div class="tool-icon" draggable="true" data-tool="panel" title="Panel / post-it">📝</div>
+          <div class="tool-icon" draggable="true" data-tool="slider" title="Slider numérique">↔</div>
+          <div class="tool-icon" draggable="true" data-tool="switch" title="Interrupteur Vrai / Faux">⏻</div>
+        </div>
+      </section>
+
+      <section class="toolbar-group project-group">
+        <div class="section-title">Projets</div>
+        <div class="project-controls">
+          <button id="addProjectBtn" title="Ajouter un projet">+ Projet</button>
+          <button id="renameProjectBtn" title="Renommer le projet actif">Renommer</button>
+          <button id="deleteProjectBtn" class="danger" title="Supprimer le projet actif">Supprimer</button>
+        </div>
+      </section>
+
+      <section class="toolbar-group">
+        <div class="section-title">Groupes</div>
+        <div class="toolbar-row">
+          <button id="addGroupBtn" title="Grouper la sélection">Grouper</button>
+          <button id="ungroupBtn" title="Dégrouper la sélection">Dégrouper</button>
+        </div>
+      </section>
+
+      <section class="toolbar-group layout-group">
+        <div class="section-title">Mise en page</div>
+        <div class="grid2 align-grid">
+          <button data-align="left" title="Aligner à gauche">Gauche</button>
+          <button data-align="center" title="Centrer horizontalement">Centre</button>
+          <button data-align="right" title="Aligner à droite">Droite</button>
+          <button data-align="top" title="Aligner en haut">Haut</button>
+          <button data-align="middle" title="Centrer verticalement">Milieu</button>
+          <button data-align="bottom" title="Aligner en bas">Bas</button>
+        </div>
+        <button id="sortBtn" title="Trier automatiquement les outils">Trier</button>
+      </section>
+
+      <section class="toolbar-group file-group">
+        <div class="section-title">Sauvegarde</div>
+        <div class="toolbar-row">
+          <button id="saveBtn" title="Sauver dans le navigateur">Sauver</button>
+          <button id="loadBtn" title="Charger depuis le navigateur">Charger</button>
+        </div>
+        <div class="toolbar-row">
+          <button id="exportBtn" title="Exporter un fichier .json, avec ou sans clé d’accès">Exporter</button>
+          <button id="importBtn" title="Importer un fichier .json">Importer</button>
+        </div>
+        <input id="importFileInput" type="file" accept="application/json,.json" hidden />
+      </section>
+
+      <section class="toolbar-group clear-group">
+        <div class="section-title">Page</div>
+        <button id="clearBtn" class="danger" title="Vider le projet actif">Vider</button>
+      </section>
+
+      <div class="legacy-inspector" hidden>
+        <input id="nameInput" />
+        <input id="colorInput" type="color" value="#ffffff" />
+        <button id="addLeftPortBtn"></button>
+        <button id="addRightPortBtn"></button>
+        <button id="deleteBtn"></button>
+      </div>
+    </header>
+
+    <main class="workspace-wrap">
+      <div class="topbar">
+        <div id="projectTabs" class="project-tabs"></div>
+        <div class="topbar-right"><span id="status">Prêt</span><span class="tip">Glisser-déposer depuis la barre du haut · Molette = zoom · Espace + glisser = déplacer la vue</span></div>
+      </div>
+      <div id="workspace" class="workspace">
+        <svg id="connections" class="connections"></svg>
+        <div id="canvas" class="canvas"></div>
+      </div>
+    </main>
+  </div>
+
+  <template id="nodeTemplate">
+    <div class="node">
+      <div class="node-header">
+        <span class="node-title"></span>
+        <span class="node-kind"></span>
+      </div>
+      <div class="node-body">
+        <div class="ports left"></div>
+        <div class="node-content"></div>
+        <div class="ports right"></div>
+      </div>
+    </div>
+  </template>
+
+  <div id="contextMenu" class="context-menu" hidden>
+    <div class="context-title">Réglages</div>
+    <label>Nom
+      <input id="ctxName" type="text" />
+    </label>
+    <label>Couleur
+      <input id="ctxColor" type="color" />
+    </label>
+    <div class="context-grid">
+      <button id="ctxAddLeft">+ Entrée</button>
+      <button id="ctxAddRight">+ Sortie</button>
+    </div>
+    <button id="ctxRenamePorts">Renommer connecteurs</button>
+    <button id="ctxGroup">Grouper sélection</button>
+    <button id="ctxUngroup">Dégrouper</button>
+    <button id="ctxDelete" class="danger">Supprimer</button>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
